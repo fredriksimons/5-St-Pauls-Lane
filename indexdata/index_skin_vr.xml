@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<krpano version="1.21.2">
+
+    
+  <!-- Spot Style - Load panorama -->
+
+
+  <style name="IconLoadpanorama"
+         url="%FIRSTXML%/spots/hotspot_animated_user_defaultpoint5.png"
+         visible="false"
+         frame="0"
+         lastframe="19"
+         framewidth="64"
+         frameheight="64"
+         stopspotsequence="false"
+         crop="0|0|64|64"
+         edge="center"
+         onloaded="startspotanimation(0.1);"
+         onhover="onhoverIconLoadpanorama"
+         onout="onoutIconLoadpanorama"
+
+
+         />
+  <action name="onhoverIconLoadpanorama">
+    showtooltip('hotspot');
+  </action>
+  <action name="onoutIconLoadpanorama">
+    hideTooltip();
+
+
+
+  </action>
+
+
+
+  <!-- ********************************* -->
+  <!--        VR GRID MENU               -->
+  <!--        by 360images.fr            -->
+  <!-- ********************************* -->
+
+  <action name="hidesomescenes_forvrmenu" autorun="preinit">
+  
+
+
+
+
+  </action>
+  
+<include url="%FIRSTXML%/graphics/360imagesvr/vrmenu.xml"/>
+
+<vrmenu
+	angle="-45"
+	groups="true"
+	onlycat="false"
+	firstgroup="false"
+	onlygroups="false"
+	displayprevnext="false"
+	width="240"
+	height="120"
+	gpwidth="400"
+	gpheight="200"
+	rows="1"
+	group_rows="1"
+	spacing="20"
+	gpspacing="50"
+	timeout="2000"
+	seen="true"
+	from="-800"
+	closevrmenu="true"
+	fademenu="true"
+	menualpha="50"
+	
+	add_txt_thumb="false"
+	txt_thumb_css="color:#ffffff;font-family:Arial;font-size:20px;text-align:center"
+	txt_thumb_vcenter="true"
+	txt_thumb_hasshadow="false"
+
+	add_txt_group="true"
+	txt_group_css="color:#ffffff;font-family:Arial;font-size:20px;text-align:center"
+	txt_group_vcenter="true"
+	txt_group_hasshadow="false"
+	
+	add_thumb_border="true"
+	thumb_border_border="0 0x000000 1.00"
+	thumb_border_bgcolor="0x000000"
+	thumb_border_bgalpha="0"
+
+	thumb_border_over_border="2 0xffffff 1.00"
+	thumb_border_over_bgcolor="0x000000"
+	thumb_border_over_bgalpha="0.7000076295109483"	
+/>
+
+
+  <!-- Fullscreen Management -->
+  <action name="exitFullScreen" devices="fullscreensupport">set(tour_fullscreen,false);js(setFullscreen(false));</action>
+  <action name="enterFullScreen" devices="fullscreensupport">set(tour_fullscreen,true);js(setFullscreen(true));</action>
+  <action name="switchFullScreen">if(tour_fullscreen,exitFullScreen();,enterFullScreen(););</action>
+
+  
+  <events name="krpanoExitFullscreenEvent"
+    onexitfullscreen="if(tour_fullscreen,exitFullScreenChangeEvent(););"
+    keep="true" />
+
+  <action name="exitFullScreenChangeEvent" devices="fullscreensupport">set(tour_fullscreen,false);events.dispatch(onexitfullscreen);</action>
+  <action name="enterFullScreenChangeEvent" devices="fullscreensupport">set(tour_fullscreen,true);events.dispatch(onenterfullscreen);</action>
+  <action name="exitFullScreenFallback">set(fullscreen,false);</action>
+  <action name="enterFullScreenFallback">set(fullscreen,true);</action>
+  
+  <action name="resizeFullScreenEvent">delayedcall(0,updatescreen(););</action>
+
+  <!-- Share Tour -->
+  <action name="shareTour">events.dispatch(onsharetour);</action>
+
+<action name="viewControlZoomIn">
+	if(%1,
+		if(%2,
+			if(%2 LT view.fovmin,
+				zoomto(get(view.fovmin));
+			,
+				if(%2 LT view.fov,
+					zoomto(%2);
+				);
+			);
+		,
+			set(fov_moveforce, -1);
+			delayedcall(0.1, viewControlZoomStop());
+		);
+	,
+		set(fov_moveforce, -1);
+	);
+</action>
+<action name="viewControlZoomOut">
+	if(%1,
+		if(%2,
+			if(%2 GT view.fovmax,
+				zoomto(get(view.fovmax));
+			,
+				if(%2 GT view.fov,
+					zoomto(%2);
+				);
+			);
+		,
+			set(fov_moveforce, +1);
+			delayedcall(0.1, viewControlZoomStop());
+		);
+	,
+		set(fov_moveforce, +1);
+	);
+</action>
+<action name="viewControlZoomStop">
+	set(fov_moveforce, 0);
+</action>
+
+  <!-- Hide / Show Controls -->
+  <action name="hideTourControls">set(tour_displaycontrols, false);events.dispatch(hidetourcontrols);</action>
+  <action name="showTourControls">set(tour_displaycontrols, true); events.dispatch(showtourcontrols);</action>
+
+
+<action name="setViewNormal">
+	stopSetViewTweens();
+	if(current_view_isflat === true,
+		setViewNonFlat(VFOV);
+	);
+	setViewNormalComplete();
+</action>
+
+<action name="setViewNormalComplete">
+	set(view.fisheyefovlink, 0.5);
+	set(view.fovmax, get(panoview.fovmax));
+	tween(view.architectural, 0.0, distance(1.0, 0.45));
+	tween(view.pannini, 0.0, distance(1.0, 0.45), easeOutQuad, if(panniniViewActivated,restoreViewFromPannini();););
+	tween(view.vlookat, get(panoview.v), distance(90, 0.45));
+	tween(view.fov, get(panoview.fov), distance(50, 0.45));
+	tween(view.fisheye, 0.0, distance(1.0, 0.45),
+		set(view.stereographic,false);
+	);
+</action>
+
+<krpano normalViewActivated="true" />
+<action name="stopSetViewTweens">
+	stoptween(view.fov);
+	stoptween(view.vlookat);
+	stoptween(view.fisheye);
+	stoptween(view.architectural);
+	stoptween(view.pannini);
+</action>
+
+  <action name="enableGyroscope">
+    changeGyroscopeState(true);
+  </action>
+  <action name="disableGyroscope">
+    changeGyroscopeState(false);
+  </action>
+
+
+</krpano>
