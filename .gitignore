@@ -1,2 +1,7 @@
 
 *.ini
+
+git add .
+git commit -m "Add missing files"
+git push origin main
+
