@@ -212,7 +212,7 @@
 <scene name="pano29687"
        heading="0"
        group="panogroup29693"
-       thumburl="indexdata/bedroom_1_29702/thumbnail.jpg"
+       thumburl="%FIRSTXML%/bedroom_1_29702/thumbnail.jpg"
        backgroundsound=""
        backgroundsoundloops="true"
        haspolygons="false"
