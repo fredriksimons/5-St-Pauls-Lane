@@ -221,7 +221,7 @@
 <scene name="pano29687"
        heading="0"
        group="panogroup29693"
-       thumburl="indexdata/bedroom_1_29702/thumbnail.jpg"
+       thumburl="%FIRSTXML%/_2_exterior_front_2_29687/thumbnail.jpg"
        backgroundsound=""
        backgroundsoundloops="true"
        haspolygons="false"
@@ -246,7 +246,7 @@
           fov="90.000000"
           hlookat="0.000000"
           vlookat="0.000000"/>
-    <preview url="indexdata/_2_exterior_front_2_29687/thumbnail.jpg" type="CUBESTRIP" striporder="FRBLUD" />
+    <preview url="%FIRSTXML%/_2_exterior_front_2_29687/preview.jpg" type="CUBESTRIP" striporder="FRBLUD" />
     <image type="CUBE" multires="true" baseindex="0" tilesize="512" devices="!androidstock|webgl">
       <level tiledimagewidth="2048" tiledimageheight="2048">
           <front url="_2_exterior_front_2_29687/0/1/%v_%u.jpg"/>
